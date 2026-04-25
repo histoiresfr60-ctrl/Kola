@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riad Qodwa — Marrakech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E8D5A3;
+      --dark: #0D0B08;
+      --warm: #1A1410;
+      --cream: #F5EFE6;
+      --muted: #8C7B65;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--dark); color: var(--cream); overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(13,11,8,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--cream); letter-spacing: 0.1em; }
+    .nav-logo em { color: var(--gold); font-style: italic; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      animation: kenburns 12s ease-in-out infinite alternate;
+      transform-origin: center center;
+    }
+    @keyframes kenburns {
+      0%   { transform: scale(1) translate(0px, 0px); }
+      33%  { transform: scale(1.08) translate(-15px, -8px); }
+      66%  { transform: scale(1.05) translate(15px, 5px); }
+      100% { transform: scale(1.1) translate(0px, -10px); }
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.75) 100%);
+    }
+    .hero-content {
+      position: absolute; bottom: 100px; left: 0; right: 0;
+      text-align: center; padding: 0 24px;
+    }
+    .hero-badge {
+      display: inline-block; font-size: 10px; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.4); padding: 8px 20px; margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 12vw, 96px); font-weight: 300;
+      line-height: 0.95; color: white;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(15px, 3vw, 20px); font-style: italic;
+      color: rgba(255,255,255,0.7); margin-top: 14px;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+    }
+    .hero-divider {
+      width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 28px auto;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.1s;
+    }
+    .hero-btn {
+      display: inline-block; font-size: 11px; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--dark); background: var(--gold);
+      padding: 16px 36px; text-decoration: none;
+      position: relative; overflow: hidden; transition: all 0.4s;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.3s;
+    }
+    .hero-btn::before { content: ''; position: absolute; inset: 0; background: var(--cream); transform: translateX(-101%); transition: transform 0.4s; }
+    .hero-btn span { position: relative; z-index: 1; }
+    .hero-btn:hover::before { transform: translateX(0); }
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.8s;
+    }
+    .scroll-hint span { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    /* SECTIONS */
+    section { padding: 80px 24px; }
+    .section-label { font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 6vw, 56px); font-weight: 300; color: var(--cream); line-height: 1.1; }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ABOUT */
+    .about { background: var(--warm); max-width: 900px; margin: 0 auto; }
+    .about-text { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 300; line-height: 1.7; color: rgba(245,239,230,0.75); font-style: italic; margin-top: 28px; }
+    .about-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(201,169,110,0.1); margin-top: 48px; }
+    .stat { background: var(--warm); padding: 28px 16px; text-align: center; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--gold); }
+    .stat-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+    /* ROOMS */
+    .rooms { background: var(--dark); }
+    .rooms-header { text-align: center; margin-bottom: 56px; }
+    .rooms-grid { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px; }
+
+    .room-card {
+      background: var(--warm);
+      overflow: hidden;
+      border-left: 2px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .room-card:hover { border-left-color: var(--gold); background: rgba(201,169,110,0.04); }
+
+    .room-img {
+      width: 100%; height: 220px;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .room-card:hover .room-img { transform: scale(1.03); }
+
+    .room-body { padding: 28px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+    .room-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--cream); }
+    .room-desc { font-size: 12px; color: var(--muted); margin-top: 8px; max-width: 320px; line-height: 1.7; }
+    .room-features { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .feature-tag { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,169,110,0.2); padding: 5px 10px; }
+
+    .room-price { text-align: right; flex-shrink: 0; }
+    .room-price-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); line-height: 1; }
+    .room-price-dh { font-size: 13px; color: var(--gold); }
+    .room-price-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+    .room-price-usd { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    /* AMENITIES */
+    .amenities { background: var(--warm); }
+    .amenities-header { text-align: center; margin-bottom: 56px; }
+    .amenities-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(2,1fr); gap: 2px; }
+    .amenity-item { background: var(--dark); padding: 28px; display: flex; gap: 16px; transition: background 0.3s; }
+    .amenity-item:hover { background: rgba(201,169,110,0.04); }
+    .amenity-icon { font-size: 22px; flex-shrink: 0; }
+    .amenity-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); }
+    .amenity-desc { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+
+    /* REVIEWS */
+    .reviews { background: var(--dark); }
+    .reviews-header { text-align: center; margin-bottom: 56px; }
+    .reviews-grid { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px; }
+    .review-card { background: var(--warm); padding: 36px 28px; }
+    .review-quote { font-family: 'Cormorant Garamond', serif; font-size: 60px; color: var(--gold); opacity: 0.2; line-height: 0.5; margin-bottom: 16px; }
+    .review-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; font-style: italic; color: rgba(245,239,230,0.85); line-height: 1.7; }
+    .review-author { margin-top: 20px; display: flex; align-items: center; gap: 14px; }
+    .review-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(201,169,110,0.2); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 15px; }
+    .review-name { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); }
+    .review-origin { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .stars { margin-left: auto; color: var(--gold); font-size: 12px; }
+
+    /* LOCATION */
+    .location { background: var(--warm); }
+    .location-header { text-align: center; margin-bottom: 40px; }
+    .location-content { max-width: 900px; margin: 0 auto; }
+    .map-container { width: 100%; height: 280px; border: 1px solid rgba(201,169,110,0.15); overflow: hidden; }
+    .map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(0.3); }
+    .location-details { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 2px; }
+    .location-item { background: var(--dark); padding: 24px; display: flex; gap: 14px; }
+    .location-icon { font-size: 18px; flex-shrink: 0; }
+    .location-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .location-value { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--cream); line-height: 1.5; }
+
+    /* CONTACT */
+    .contact-section { background: var(--dark); text-align: center; padding: 100px 24px; }
+    .contact-links { display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 400px; margin: 40px auto; }
+    .contact-link { display: flex; align-items: center; gap: 16px; padding: 16px 28px; border: 1px solid rgba(201,169,110,0.15); width: 100%; text-decoration: none; transition: all 0.3s; color: var(--cream); }
+    .contact-link:hover { border-color: var(--gold); background: rgba(201,169,110,0.04); }
+    .contact-link-text { font-size: 13px; font-weight: 300; }
+    .book-btn { display: inline-block; font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 20px 56px; text-decoration: none; position: relative; overflow: hidden; transition: all 0.4s; }
+    .book-btn::before { content: ''; position: absolute; inset: 0; background: var(--cream); transform: translateX(-101%); transition: transform 0.4s; }
+    .book-btn span { position: relative; z-index: 1; }
+    .book-btn:hover::before { transform: translateX(0); }
+
+    /* FOOTER */
+    footer { background: var(--warm); padding: 40px 24px; text-align: center; border-top: 1px solid rgba(201,169,110,0.08); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--cream); letter-spacing: 0.1em; }
+    .footer-logo em { color: var(--gold); font-style: italic; }
+    .footer-copy { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .amenities-grid { grid-template-columns: 1fr; }
+      .location-details { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-logo">Riad <em>Qodwa</em></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#amenities">Amenities</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="#contact">Book</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO avec sswira dyalk lli b3attha -->
+  <section class="hero" id="home">
+    <img class="hero-img"
+      src="https://riadqodwa.com/wp-content/uploads/2024/12/piscinelouka.jpg"
+      alt="Riad Qodwa Pool View">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Boutique Riad · Marrakech, Morocco</div>
+      <h1 class="hero-title">Riad<br><em>Qodwa</em></h1>
+      <p class="hero-sub">A tranquil oasis in the heart of Morocco</p>
+      <div class="hero-divider"></div>
+      <a href="#contact" class="hero-btn"><span>Reserve Your Stay</span></a>
+    </div>
+    <div class="scroll-hint">
+      <span>Discover</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="reveal">
+      <div class="section-label">Our Story</div>
+      <h2 class="section-title">A Moroccan <em>sanctuary</em><br>unlike any other</h2>
+      <p class="about-text">Nestled on the outskirts of Marrakech, Riad Qodwa is a boutique haven surrounded by over 1,000 species of exotic plants. Facing the breathtaking Atlas Mountains, we offer an authentic Moroccan experience — 20 minutes from the vibrant medina, yet worlds away from the hustle.</p>
+      <div class="about-stats">
+        <div class="stat"><div class="stat-num">20</div><div class="stat-label">Rooms & Suites</div></div>
+        <div class="stat"><div class="stat-num">1K+</div><div class="stat-label">Plant Species</div></div>
+        <div class="stat"><div class="stat-num">4.8★</div><div class="stat-label">Guest Rating</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROOMS -->
+  <section class="rooms" id="rooms">
+    <div class="rooms-header reveal">
+      <div class="section-label">Accommodations</div>
+      <h2 class="section-title">Choose your <em>retreat</em></h2>
+    </div>
+    <div class="rooms-grid">
+
+      <div class="room-card reveal">
+        <img class="room-img" src="https://riadqodwa.com/wp-content/uploads/2024/12/suite1.jpg" alt="Family Suite">
+        <div class="room-body">
+          <div>
+            <div class="room-name">Family Suite</div>
+            <div class="room-desc">Three bedrooms and a living area — ideal for families. Connects directly to the children's garden and family pool.</div>
+            <div class="room-features">
+              <span class="feature-tag">3 Bedrooms</span>
+              <span class="feature-tag">King Bed</span>
+              <span class="feature-tag">Smart TV</span>
+              <span class="feature-tag">AC</span>
+              <span class="feature-tag">Minibar</span>
+            </div>
+          </div>
+          <div class="room-price">
+            <div class="room-price-num">800</div>
+            <div class="room-price-dh">DH</div>
+            <div class="room-price-label">/ night</div>
+            <div class="room-price-usd">≈ $80 USD</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card reveal">
+        <img class="room-img" src="https://riadqodwa.com/wp-content/uploads/2024/12/suite3.jpg" alt="Deluxe King Room">
+        <div class="room-body">
+          <div>
+            <div class="room-name">Deluxe King Room</div>
+            <div class="room-desc">Elegant room with a king-sized bed and city views. Ideal for couples or business travelers seeking comfort.</div>
+            <div class="room-features">
+              <span class="feature-tag">King Bed</span>
+              <span class="feature-tag">City View</span>
+              <span class="feature-tag">Smart TV</span>
+              <span class="feature-tag">AC</span>
+              <span class="feature-tag">Minibar</span>
+            </div>
+          </div>
+          <div class="room-price">
+            <div class="room-price-num">600</div>
+            <div class="room-price-dh">DH</div>
+            <div class="room-price-label">/ night</div>
+            <div class="room-price-usd">≈ $60 USD</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card reveal">
+        <img class="room-img" src="https://riadqodwa.com/wp-content/uploads/2025/01/WhatsApp-Image-2025-01-05-at-19.16.57-1-scaled.jpeg" alt="Executive Suite">
+        <div class="room-body">
+          <div>
+            <div class="room-name">Executive Suite</div>
+            <div class="room-desc">Premium suite for business professionals. Workspace, high-speed WiFi, and meeting room access included.</div>
+            <div class="room-features">
+              <span class="feature-tag">King Bed</span>
+              <span class="feature-tag">Workspace</span>
+              <span class="feature-tag">Smart TV</span>
+              <span class="feature-tag">AC</span>
+              <span class="feature-tag">Minibar</span>
+            </div>
+          </div>
+          <div class="room-price">
+            <div class="room-price-num">500</div>
+            <div class="room-price-dh">DH</div>
+            <div class="room-price-label">/ night</div>
+            <div class="room-price-usd">≈ $50 USD</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AMENITIES -->
+  <section class="amenities" id="amenities">
+    <div class="amenities-header reveal">
+      <div class="section-label">Facilities</div>
+      <h2 class="section-title">Everything you <em>need</em></h2>
+    </div>
+    <div class="amenities-grid">
+      <div class="amenity-item reveal"><div class="amenity-icon">🏊</div><div><div class="amenity-name">Swimming Pool</div><div class="amenity-desc">17m × 5m outdoor pool surrounded by lush gardens.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🌿</div><div><div class="amenity-name">Exotic Gardens</div><div class="amenity-desc">Over 1,000 plant species across 1 hectare of grounds.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🍽️</div><div><div class="amenity-name">Restaurant</div><div class="amenity-desc">Authentic Moroccan cuisine. Breakfast included.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🧖</div><div><div class="amenity-name">Hammam & Spa</div><div class="amenity-desc">Traditional Turkish bath and massage treatments.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🚐</div><div><div class="amenity-name">Free Shuttle</div><div class="amenity-desc">Complimentary shuttle to city center and airport.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🧒</div><div><div class="amenity-name">Kids' Club</div><div class="amenity-desc">Childcare, family pools and guided nature tours.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🪂</div><div><div class="amenity-name">Adventures</div><div class="amenity-desc">Desert tours, Atlas treks, hot air balloon & more.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🅿️</div><div><div class="amenity-name">Free Parking</div><div class="amenity-desc">Secure private parking available 24/7.</div></div></div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+    <div class="reviews-header reveal">
+      <div class="section-label">Guest Experiences</div>
+      <h2 class="section-title">What our guests <em>say</em></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">Loved how peaceful and gorgeous the place was. Amazing breakfast and lovely personnel. Parking also very good and safe.</p>
+        <div class="review-author">
+          <div class="review-avatar">S</div>
+          <div><div class="review-name">Sarah M.</div><div class="review-origin">United Kingdom</div></div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">The staff were exceptionally attentive. The ambiance of the Riad was truly unforgettable — tradition meets luxury.</p>
+        <div class="review-author">
+          <div class="review-avatar">M</div>
+          <div><div class="review-name">Marco T.</div><div class="review-origin">Italy</div></div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">A peaceful place full of greenery and roaming peacocks. Two clean pools, free parking. The breakfast was exceptional.</p>
+        <div class="review-author">
+          <div class="review-avatar">A</div>
+          <div><div class="review-name">Anna K.</div><div class="review-origin">Czech Republic</div></div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="location" id="location">
+    <div class="location-header reveal">
+      <div class="section-label">Find Us</div>
+      <h2 class="section-title">Our <em>location</em></h2>
+    </div>
+    <div class="location-content reveal">
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3396.3!2d-8.1!3d31.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdafef14b7f37d3f%3A0x5959bde3e3a777c!2sRiad%20Qodwa!5e0!3m2!1sen!2sma!4v1" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="location-details">
+        <div class="location-item"><div class="location-icon">📍</div><div><div class="location-label">Address</div><div class="location-value">Km 15, Route Sidi Abdellah Ghiat<br>Marrakech, Morocco</div></div></div>
+        <div class="location-item"><div class="location-icon">✈️</div><div><div class="location-label">From Airport</div><div class="location-value">13 km · Free shuttle available</div></div></div>
+        <div class="location-item"><div class="location-icon">🕌</div><div><div class="location-label">From Medina</div><div class="location-value">13 km · Free shuttle to city center</div></div></div>
+        <div class="location-item"><div class="location-icon">⛰️</div><div><div class="location-label">Nearby</div><div class="location-value">Atlas Mountains · Ourika Valley</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="section-label reveal">Contact & Reservations</div>
+    <h2 class="section-title reveal">Begin your <em>journey</em></h2>
+    <div class="contact-links reveal">
+      <a href="tel:+212661408248" class="contact-link"><span>📞</span><span class="contact-link-text">+212 661-408248</span></a>
+      <a href="mailto:contact@riadqodwa.com" class="contact-link"><span>✉️</span><span class="contact-link-text">contact@riadqodwa.com</span></a>
+      <a href="https://riadqodwa.com" target="_blank" class="contact-link"><span>🌐</span><span class="contact-link-text">riadqodwa.com</span></a>
+    </div>
+    <a href="mailto:contact@riadqodwa.com" class="book-btn reveal"><span>Reserve Now</span></a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Riad <em>Qodwa</em></div>
+    <div class="footer-copy">© 2025 Riad Qodwa · Marrakech, Morocco · All rights reserved</div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riad Qodwa — Marrakech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E8D5A3;
+      --dark: #0D0B08;
+      --warm: #1A1410;
+      --cream: #F5EFE6;
+      --muted: #8C7B65;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--dark); color: var(--cream); overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(13,11,8,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--cream); letter-spacing: 0.1em; }
+    .nav-logo em { color: var(--gold); font-style: italic; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      animation: kenburns 12s ease-in-out infinite alternate;
+      transform-origin: center center;
+    }
+    @keyframes kenburns {
+      0%   { transform: scale(1) translate(0px, 0px); }
+      33%  { transform: scale(1.08) translate(-15px, -8px); }
+      66%  { transform: scale(1.05) translate(15px, 5px); }
+      100% { transform: scale(1.1) translate(0px, -10px); }
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.75) 100%);
+    }
+    .hero-content {
+      position: absolute; bottom: 100px; left: 0; right: 0;
+      text-align: center; padding: 0 24px;
+    }
+    .hero-badge {
+      display: inline-block; font-size: 10px; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.4); padding: 8px 20px; margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 12vw, 96px); font-weight: 300;
+      line-height: 0.95; color: white;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(15px, 3vw, 20px); font-style: italic;
+      color: rgba(255,255,255,0.7); margin-top: 14px;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+    }
+    .hero-divider {
+      width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 28px auto;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.1s;
+    }
+    .hero-btn {
+      display: inline-block; font-size: 11px; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--dark); background: var(--gold);
+      padding: 16px 36px; text-decoration: none;
+      position: relative; overflow: hidden; transition: all 0.4s;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.3s;
+    }
+    .hero-btn::before { content: ''; position: absolute; inset: 0; background: var(--cream); transform: translateX(-101%); transition: transform 0.4s; }
+    .hero-btn span { position: relative; z-index: 1; }
+    .hero-btn:hover::before { transform: translateX(0); }
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.8s;
+    }
+    .scroll-hint span { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    /* SECTIONS */
+    section { padding: 80px 24px; }
+    .section-label { font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 6vw, 56px); font-weight: 300; color: var(--cream); line-height: 1.1; }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ABOUT */
+    .about { background: var(--warm); max-width: 900px; margin: 0 auto; }
+    .about-text { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 300; line-height: 1.7; color: rgba(245,239,230,0.75); font-style: italic; margin-top: 28px; }
+    .about-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(201,169,110,0.1); margin-top: 48px; }
+    .stat { background: var(--warm); padding: 28px 16px; text-align: center; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--gold); }
+    .stat-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+    /* ROOMS */
+    .rooms { background: var(--dark); }
+    .rooms-header { text-align: center; margin-bottom: 56px; }
+    .rooms-grid { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px; }
+
+    .room-card {
+      background: var(--warm);
+      overflow: hidden;
+      border-left: 2px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .room-card:hover { border-left-color: var(--gold); background: rgba(201,169,110,0.04); }
+
+    .room-img {
+      width: 100%; height: 220px;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .room-card:hover .room-img { transform: scale(1.03); }
+
+    .room-body { padding: 28px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+    .room-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--cream); }
+    .room-desc { font-size: 12px; color: var(--muted); margin-top: 8px; max-width: 320px; line-height: 1.7; }
+    .room-features { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .feature-tag { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,169,110,0.2); padding: 5px 10px; }
+
+    .room-price { text-align: right; flex-shrink: 0; }
+    .room-price-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); line-height: 1; }
+    .room-price-dh { font-size: 13px; color: var(--gold); }
+    .room-price-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+    .room-price-usd { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    /* AMENITIES */
+    .amenities { background: var(--warm); }
+    .amenities-header { text-align: center; margin-bottom: 56px; }
+    .amenities-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(2,1fr); gap: 2px; }
+    .amenity-item { background: var(--dark); padding: 28px; display: flex; gap: 16px; transition: background 0.3s; }
+    .amenity-item:hover { background: rgba(201,169,110,0.04); }
+    .amenity-icon { font-size: 22px; flex-shrink: 0; }
+    .amenity-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); }
+    .amenity-desc { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+
+    /* REVIEWS */
+    .reviews { background: var(--dark); }
+    .reviews-header { text-align: center; margin-bottom: 56px; }
+    .reviews-grid { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px; }
+    .review-card { background: var(--warm); padding: 36px 28px; }
+    .review-quote { font-family: 'Cormorant Garamond', serif; font-size: 60px; color: var(--gold); opacity: 0.2; line-height: 0.5; margin-bottom: 16px; }
+    .review-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; font-style: italic; color: rgba(245,239,230,0.85); line-height: 1.7; }
+    .review-author { margin-top: 20px; display: flex; align-items: center; gap: 14px; }
+    .review-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(201,169,110,0.2); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 15px; }
+    .review-name { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); }
+    .review-origin { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .stars { margin-left: auto; color: var(--gold); font-size: 12px; }
+
+    /* LOCATION */
+    .location { background: var(--warm); }
+    .location-header { text-align: center; margin-bottom: 40px; }
+    .location-content { max-width: 900px; margin: 0 auto; }
+    .map-container { width: 100%; height: 280px; border: 1px solid rgba(201,169,110,0.15); overflow: hidden; }
+    .map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(0.3); }
+    .location-details { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 2px; }
+    .location-item { background: var(--dark); padding: 24px; display: flex; gap: 14px; }
+    .location-icon { font-size: 18px; flex-shrink: 0; }
+    .location-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .location-value { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--cream); line-height: 1.5; }
+
+    /* CONTACT */
+    .contact-section { background: var(--dark); text-align: center; padding: 100px 24px; }
+    .contact-links { display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 400px; margin: 40px auto; }
+    .contact-link { display: flex; align-items: center; gap: 16px; padding: 16px 28px; border: 1px solid rgba(201,169,110,0.15); width: 100%; text-decoration: none; transition: all 0.3s; color: var(--cream); }
+    .contact-link:hover { border-color: var(--gold); background: rgba(201,169,110,0.04); }
+    .contact-link-text { font-size: 13px; font-weight: 300; }
+    .book-btn { display: inline-block; font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 20px 56px; text-decoration: none; position: relative; overflow: hidden; transition: all 0.4s; }
+    .book-btn::before { content: ''; position: absolute; inset: 0; background: var(--cream); transform: translateX(-101%); transition: transform 0.4s; }
+    .book-btn span { position: relative; z-index: 1; }
+    .book-btn:hover::before { transform: translateX(0); }
+
+    /* FOOTER */
+    footer { background: var(--warm); padding: 40px 24px; text-align: center; border-top: 1px solid rgba(201,169,110,0.08); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--cream); letter-spacing: 0.1em; }
+    .footer-logo em { color: var(--gold); font-style: italic; }
+    .footer-copy { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .amenities-grid { grid-template-columns: 1fr; }
+      .location-details { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-logo">Riad <em>Qodwa</em></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#amenities">Amenities</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="#contact">Book</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO avec sswira dyalk lli b3attha -->
+  <section class="hero" id="home">
+    <img class="hero-img"
+      src="https://riadqodwa.com/wp-content/uploads/2024/12/piscinelouka.jpg"
+      alt="Riad Qodwa Pool View">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Boutique Riad · Marrakech, Morocco</div>
+      <h1 class="hero-title">Riad<br><em>Qodwa</em></h1>
+      <p class="hero-sub">A tranquil oasis in the heart of Morocco</p>
+      <div class="hero-divider"></div>
+      <a href="#contact" class="hero-btn"><span>Reserve Your Stay</span></a>
+    </div>
+    <div class="scroll-hint">
+      <span>Discover</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="reveal">
+      <div class="section-label">Our Story</div>
+      <h2 class="section-title">A Moroccan <em>sanctuary</em><br>unlike any other</h2>
+      <p class="about-text">Nestled on the outskirts of Marrakech, Riad Qodwa is a boutique haven surrounded by over 1,000 species of exotic plants. Facing the breathtaking Atlas Mountains, we offer an authentic Moroccan experience — 20 minutes from the vibrant medina, yet worlds away from the hustle.</p>
+      <div class="about-stats">
+        <div class="stat"><div class="stat-num">20</div><div class="stat-label">Rooms & Suites</div></div>
+        <div class="stat"><div class="stat-num">1K+</div><div class="stat-label">Plant Species</div></div>
+        <div class="stat"><div class="stat-num">4.8★</div><div class="stat-label">Guest Rating</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROOMS -->
+  <section class="rooms" id="rooms">
+    <div class="rooms-header reveal">
+      <div class="section-label">Accommodations</div>
+      <h2 class="section-title">Choose your <em>retreat</em></h2>
+    </div>
+    <div class="rooms-grid">
+
+      <div class="room-card reveal">
+        <img class="room-img" src="https://riadqodwa.com/wp-content/uploads/2024/12/suite1.jpg" alt="Family Suite">
+        <div class="room-body">
+          <div>
+            <div class="room-name">Family Suite</div>
+            <div class="room-desc">Three bedrooms and a living area — ideal for families. Connects directly to the children's garden and family pool.</div>
+            <div class="room-features">
+              <span class="feature-tag">3 Bedrooms</span>
+              <span class="feature-tag">King Bed</span>
+              <span class="feature-tag">Smart TV</span>
+              <span class="feature-tag">AC</span>
+              <span class="feature-tag">Minibar</span>
+            </div>
+          </div>
+          <div class="room-price">
+            <div class="room-price-num">800</div>
+            <div class="room-price-dh">DH</div>
+            <div class="room-price-label">/ night</div>
+            <div class="room-price-usd">≈ $80 USD</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card reveal">
+        <img class="room-img" src="https://riadqodwa.com/wp-content/uploads/2024/12/suite3.jpg" alt="Deluxe King Room">
+        <div class="room-body">
+          <div>
+            <div class="room-name">Deluxe King Room</div>
+            <div class="room-desc">Elegant room with a king-sized bed and city views. Ideal for couples or business travelers seeking comfort.</div>
+            <div class="room-features">
+              <span class="feature-tag">King Bed</span>
+              <span class="feature-tag">City View</span>
+              <span class="feature-tag">Smart TV</span>
+              <span class="feature-tag">AC</span>
+              <span class="feature-tag">Minibar</span>
+            </div>
+          </div>
+          <div class="room-price">
+            <div class="room-price-num">600</div>
+            <div class="room-price-dh">DH</div>
+            <div class="room-price-label">/ night</div>
+            <div class="room-price-usd">≈ $60 USD</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card reveal">
+        <img class="room-img" src="https://riadqodwa.com/wp-content/uploads/2025/01/WhatsApp-Image-2025-01-05-at-19.16.57-1-scaled.jpeg" alt="Executive Suite">
+        <div class="room-body">
+          <div>
+            <div class="room-name">Executive Suite</div>
+            <div class="room-desc">Premium suite for business professionals. Workspace, high-speed WiFi, and meeting room access included.</div>
+            <div class="room-features">
+              <span class="feature-tag">King Bed</span>
+              <span class="feature-tag">Workspace</span>
+              <span class="feature-tag">Smart TV</span>
+              <span class="feature-tag">AC</span>
+              <span class="feature-tag">Minibar</span>
+            </div>
+          </div>
+          <div class="room-price">
+            <div class="room-price-num">500</div>
+            <div class="room-price-dh">DH</div>
+            <div class="room-price-label">/ night</div>
+            <div class="room-price-usd">≈ $50 USD</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AMENITIES -->
+  <section class="amenities" id="amenities">
+    <div class="amenities-header reveal">
+      <div class="section-label">Facilities</div>
+      <h2 class="section-title">Everything you <em>need</em></h2>
+    </div>
+    <div class="amenities-grid">
+      <div class="amenity-item reveal"><div class="amenity-icon">🏊</div><div><div class="amenity-name">Swimming Pool</div><div class="amenity-desc">17m × 5m outdoor pool surrounded by lush gardens.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🌿</div><div><div class="amenity-name">Exotic Gardens</div><div class="amenity-desc">Over 1,000 plant species across 1 hectare of grounds.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🍽️</div><div><div class="amenity-name">Restaurant</div><div class="amenity-desc">Authentic Moroccan cuisine. Breakfast included.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🧖</div><div><div class="amenity-name">Hammam & Spa</div><div class="amenity-desc">Traditional Turkish bath and massage treatments.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🚐</div><div><div class="amenity-name">Free Shuttle</div><div class="amenity-desc">Complimentary shuttle to city center and airport.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🧒</div><div><div class="amenity-name">Kids' Club</div><div class="amenity-desc">Childcare, family pools and guided nature tours.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🪂</div><div><div class="amenity-name">Adventures</div><div class="amenity-desc">Desert tours, Atlas treks, hot air balloon & more.</div></div></div>
+      <div class="amenity-item reveal"><div class="amenity-icon">🅿️</div><div><div class="amenity-name">Free Parking</div><div class="amenity-desc">Secure private parking available 24/7.</div></div></div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+    <div class="reviews-header reveal">
+      <div class="section-label">Guest Experiences</div>
+      <h2 class="section-title">What our guests <em>say</em></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">Loved how peaceful and gorgeous the place was. Amazing breakfast and lovely personnel. Parking also very good and safe.</p>
+        <div class="review-author">
+          <div class="review-avatar">S</div>
+          <div><div class="review-name">Sarah M.</div><div class="review-origin">United Kingdom</div></div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">The staff were exceptionally attentive. The ambiance of the Riad was truly unforgettable — tradition meets luxury.</p>
+        <div class="review-author">
+          <div class="review-avatar">M</div>
+          <div><div class="review-name">Marco T.</div><div class="review-origin">Italy</div></div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <p class="review-text">A peaceful place full of greenery and roaming peacocks. Two clean pools, free parking. The breakfast was exceptional.</p>
+        <div class="review-author">
+          <div class="review-avatar">A</div>
+          <div><div class="review-name">Anna K.</div><div class="review-origin">Czech Republic</div></div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="location" id="location">
+    <div class="location-header reveal">
+      <div class="section-label">Find Us</div>
+      <h2 class="section-title">Our <em>location</em></h2>
+    </div>
+    <div class="location-content reveal">
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3396.3!2d-8.1!3d31.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdafef14b7f37d3f%3A0x5959bde3e3a777c!2sRiad%20Qodwa!5e0!3m2!1sen!2sma!4v1" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="location-details">
+        <div class="location-item"><div class="location-icon">📍</div><div><div class="location-label">Address</div><div class="location-value">Km 15, Route Sidi Abdellah Ghiat<br>Marrakech, Morocco</div></div></div>
+        <div class="location-item"><div class="location-icon">✈️</div><div><div class="location-label">From Airport</div><div class="location-value">13 km · Free shuttle available</div></div></div>
+        <div class="location-item"><div class="location-icon">🕌</div><div><div class="location-label">From Medina</div><div class="location-value">13 km · Free shuttle to city center</div></div></div>
+        <div class="location-item"><div class="location-icon">⛰️</div><div><div class="location-label">Nearby</div><div class="location-value">Atlas Mountains · Ourika Valley</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="section-label reveal">Contact & Reservations</div>
+    <h2 class="section-title reveal">Begin your <em>journey</em></h2>
+    <div class="contact-links reveal">
+      <a href="tel:+212661408248" class="contact-link"><span>📞</span><span class="contact-link-text">+212 661-408248</span></a>
+      <a href="mailto:contact@riadqodwa.com" class="contact-link"><span>✉️</span><span class="contact-link-text">contact@riadqodwa.com</span></a>
+      <a href="https://riadqodwa.com" target="_blank" class="contact-link"><span>🌐</span><span class="contact-link-text">riadqodwa.com</span></a>
+    </div>
+    <a href="mailto:contact@riadqodwa.com" class="book-btn reveal"><span>Reserve Now</span></a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Riad <em>Qodwa</em></div>
+    <div class="footer-copy">© 2025 Riad Qodwa · Marrakech, Morocco · All rights reserved</div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
